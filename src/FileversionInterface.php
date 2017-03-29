@@ -19,8 +19,6 @@ interface FileversionInterface
 
     /**
      * @param string $path Caminho para o arquivo.
-     *
-     * @return string
      */
     public function setPath($path);
 
