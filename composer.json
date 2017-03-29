@@ -1,7 +1,7 @@
 {
-  "name": "lidercap/framework-skeleton",
-  "description": "Esqueleto de componentes PHP",
-  "version": "1.0.0",
+  "name": "lidercap/framework-component-fileversion",
+  "description": "Gerenciador de versões de arquivos",
+  "version": "0.1.0",
   "license": "proprietary",
   "type": "library",
   "config": {
@@ -26,7 +26,8 @@
     "phpmd/phpmd": "^2.6",
     "sebastian/phpcpd": "2.0.*",
     "sebastian/phpdcd": "^1.0",
-    "squizlabs/php_codesniffer": "^2.6"
+    "squizlabs/php_codesniffer": "^2.6",
+    "mikey179/vfsStream": "^1.6"
   },
   "minimum-stability": "dev",
   "prefer-stable": true
