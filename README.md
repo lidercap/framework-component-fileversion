@@ -1,22 +1,22 @@
-Nome do Projeto
-===============
+Component Fileversion
+=====================
 
-Aqui vai uma pequena descrição do projeto, falando um pouco sobre seu propósito e os problemas que ele se propõe a resolver.
+Gerenciador de versões de arquivos.
 
 Instalação
 ----------
 
-É recomendado instalar **[nome-do-projeto]** através do [composer](http://getcomposer.org).
+É recomendado instalar **component-fileversion** através do [composer](http://getcomposer.org).
 
 ```json
 {
     "require": {
-        "lidercap/framework-[nome-do-projeto]": "dev-master"
+        "lidercap/framework-component-fileversion": "dev-master"
     },
     "repositories": [
         {
             "type": "vcs",
-            "url":  "git@bitbucket.org:lidercap/framework-[nome-do-projeto].git"
+            "url":  "git@bitbucket.org:lidercap/framework-component-fileversion.git"
         }
     ]
 }
