@@ -56,8 +56,10 @@ interface FileversionInterface
 
     /**
      * Obtém o conteúdo do arquivo.
+     *
+     * @return string
      */
-    public function getContents();
+    public function read();
 
     /**
      * Escreve no arquivo, gerando uma nova versão.
@@ -66,7 +68,7 @@ interface FileversionInterface
      *
      * @return $this
      */
-    public function putContents($contents);
+    public function write($contents);
 
     /**
      * Apaga do disco todas as versões do arquivo,
