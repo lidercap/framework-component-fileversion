@@ -1,0 +1,33 @@
+{
+  "name": "lidercap/framework-skeleton",
+  "description": "Esqueleto de componentes PHP",
+  "version": "1.0.0",
+  "license": "proprietary",
+  "type": "library",
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-4": {
+      "Lidercap\\Skeleton\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Lidercap\\Tests\\Skeleton\\": "tests/"
+    }
+  },
+  "require": {
+    "php": ">=5.5.9"
+  },
+  "require-dev": {
+    "ext-xdebug": "*",
+    "phpunit/phpunit": "^4.8",
+    "phpmd/phpmd": "^2.6",
+    "sebastian/phpcpd": "2.0.*",
+    "sebastian/phpdcd": "^1.0",
+    "squizlabs/php_codesniffer": "^2.6"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
