@@ -72,7 +72,7 @@ interface FileversionInterface
 
     /**
      * Apaga do disco todas as versões do arquivo,
-     * Mantendo somente o número de versões especificado.
+     * mantendo somente o número de versões especificado.
      *
      * @param int $keep
      *
