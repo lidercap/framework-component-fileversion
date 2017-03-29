@@ -9,12 +9,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Lidercap\\Skeleton\\": "src/"
+      "Lidercap\\Component\\Fileversion\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Lidercap\\Tests\\Skeleton\\": "tests/"
+      "Lidercap\\Tests\\Component\\Fileversion\\": "tests/"
     }
   },
   "require": {
