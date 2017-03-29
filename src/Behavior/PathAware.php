@@ -1,6 +1,6 @@
 <?php
 
-namespace Lidercap\Component\Fileversion;
+namespace Lidercap\Component\Fileversion\Behavior;
 
 /**
  * @codeCoverageIgnore
