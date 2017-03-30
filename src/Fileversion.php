@@ -31,17 +31,6 @@ class Fileversion implements FileversionInterface
     }
 
     /**
-     * Verifica se a versão atual do arquivo está
-     * desatualizada em relação a sua versão anterior.
-     *
-     * @return bool
-     */
-    public function isOutdated()
-    {
-        return true;
-    }
-
-    /**
      * Obtém o número da versão atual do arquivo.
      *
      * @return int

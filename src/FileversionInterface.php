@@ -31,14 +31,6 @@ interface FileversionInterface
     public function isUpdated();
 
     /**
-     * Verifica se a versão atual do arquivo está
-     * desatualizada em relação a sua versão anterior.
-     *
-     * @return bool
-     */
-    public function isOutdated();
-
-    /**
      * Obtém o número da versão atual do arquivo.
      *
      * @return int

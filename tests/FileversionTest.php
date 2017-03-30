@@ -27,11 +27,6 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->fileVersion->isUpdated());
     }
 
-    public function testIsOutdated()
-    {
-        $this->assertTrue($this->fileVersion->isOutdated());
-    }
-
     public function testVersion()
     {
         $this->assertEquals(1, $this->fileVersion->version());
