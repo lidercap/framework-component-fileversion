@@ -106,7 +106,14 @@ class Fileversion implements FileversionInterface
      */
     public function write($contents)
     {
-        @file_put_contents($this->path, $contents);
+        $path = $this->path . '.' . $this->version();
+        if (!file_exists($path)) {
+            file_put_contents($path, $contents);
+            return $this;
+        }
+
+        $path = $this->path . '.' . $this->version() + 1;
+        file_put_contents($path, $contents);
 
         return $this;
     }
