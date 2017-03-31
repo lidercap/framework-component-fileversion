@@ -33,11 +33,22 @@ class Fileversion implements FileversionInterface
     /**
      * Obtém o número da versão atual do arquivo.
      *
+     * Caso o arquivo não exista, ou não tenha sido
+     * versionado ainda, a versão retornada será "1".
+     *
      * @return int
      */
     public function version()
     {
-        return 1;
+        if (!file_exists($this->path)) {
+            return 1;
+        }
+
+        $filename = basename($this->path);
+        $version  = @explode('.', $filename);
+        $version  = end($version);
+
+        return is_numeric($version) ? $version : 1;
     }
 
     /**
@@ -69,6 +80,8 @@ class Fileversion implements FileversionInterface
      */
     public function write($contents)
     {
+        @file_put_contents($this->path, $contents);
+
         return $this;
     }
 

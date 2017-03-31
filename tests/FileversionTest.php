@@ -4,6 +4,8 @@ namespace Lidercap\Tests\Component\Fileversion;
 
 use Lidercap\Component\Fileversion\Fileversion;
 use Lidercap\Component\Fileversion\FileversionInterface;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 
 class FileversionTest extends \PHPUnit_Framework_TestCase
 {
@@ -12,9 +14,15 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
      */
     protected $fileVersion;
 
+    /**
+     * @var vfsStreamDirectory
+     */
+    protected $workingDir;
+
     public function setUp()
     {
         $this->fileVersion = new Fileversion;
+        $this->workingDir  = vfsStream::setup('tmp');
     }
 
     public function testInterface()
@@ -27,9 +35,43 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->fileVersion->isUpdated());
     }
 
-    public function testVersion()
+    public function testVersion1()
     {
         $this->assertEquals(1, $this->fileVersion->version());
+    }
+
+    public function testVersion2()
+    {
+        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true));
+        $contents = 'this is my random test content ' . rand(1, 100);
+
+        file_put_contents($filePath, $contents);
+        $this->fileVersion->setPath($filePath);
+
+        $this->assertEquals(1, $this->fileVersion->version());
+    }
+
+    public function testVersion3()
+    {
+        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $contents = 'this is my random test content ' . rand(1, 100);
+
+        file_put_contents($filePath, $contents);
+        $this->fileVersion->setPath($filePath);
+
+        $this->assertEquals(1, $this->fileVersion->version());
+    }
+
+    public function testVersion4()
+    {
+        $version  = rand(1, 100);
+        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt.' . $version;
+        $contents = 'this is my random test content ' . rand(1, 100);
+
+        file_put_contents($filePath, $contents);
+        $this->fileVersion->setPath($filePath);
+
+        $this->assertEquals($version, $this->fileVersion->version());
     }
 
     public function testFetch()
