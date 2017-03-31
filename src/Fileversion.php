@@ -85,11 +85,16 @@ class Fileversion implements FileversionInterface
     /**
      * Obtém o conteúdo da versão mais atual do arquivo.
      *
-     * @return string
+     * @return string|false
      */
     public function read()
     {
-        return '{"key": "value"}';
+        $path = $this->path . '.' . $this->version();
+        if (!file_exists($path)) {
+            return false;
+        }
+
+        return file_get_contents($path);
     }
 
     /**

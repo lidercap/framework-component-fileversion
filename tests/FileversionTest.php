@@ -97,9 +97,31 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([1,2,3], $this->fileVersion->fetch());
     }
 
-    public function testRead()
+    public function testRead1()
     {
-        $this->assertEquals('{"key": "value"}', $this->fileVersion->read());
+        $filePath = $this->workingDir->url() . '/unexistent-file-' . md5(microtime(true)) . '.txt';
+        $this->fileVersion->setPath($filePath);
+        $this->assertFalse($this->fileVersion->read());
+    }
+
+    public function testRead2()
+    {
+        $version  = rand(1, 100);
+        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+
+        $contents1 = 'this is my first random test content ' . rand(1, 100);
+        $contents2 = 'this is my seccond random test content ' . rand(1, 100);
+        $contents3 = 'this is my third random test content ' . rand(1, 100);
+
+        file_put_contents($filePath . '.1', $contents1);
+        file_put_contents($filePath . '.2', $contents2);
+        file_put_contents($filePath . '.3', $contents3);
+        file_put_contents($filePath . '-another.1', $contents1);
+        file_put_contents($filePath . '-another.2', $contents2);
+        file_put_contents($filePath . '-another.3', $contents3);
+        $this->fileVersion->setPath($filePath);
+
+        $this->assertEquals($contents3, $this->fileVersion->read());
     }
 
     public function testWrite()

@@ -50,7 +50,7 @@ interface FileversionInterface
     /**
      * Obtém o conteúdo da versão mais atual do arquivo.
      *
-     * @return string
+     * @return string|false
      */
     public function read();
 
