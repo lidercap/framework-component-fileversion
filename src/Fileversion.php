@@ -44,11 +44,9 @@ class Fileversion implements FileversionInterface
             return 1;
         }
 
-        $filename = basename($this->path);
-        $version  = @explode('.', $filename);
-        $version  = end($version);
+        $versions = $this->fetch();
 
-        return is_numeric($version) ? $version : 1;
+        return end($versions);
     }
 
     /**
@@ -58,18 +56,35 @@ class Fileversion implements FileversionInterface
      */
     public function fetch()
     {
+        if (!strlen($this->path)) {
+            return [1];
+        }
+
         $direcory = dirname($this->path);
         $iterator = new \DirectoryIterator($direcory);
         $versions = [];
 
         foreach ($iterator as $file) {
             if (!$file->isDot()) {
-                $fileversion = new Fileversion($file->getPathName());
-                array_push($versions, $fileversion->version());
+
+                $filename = basename($file->getPathName());
+                $version  = @explode('.', $filename);
+                $version  = end($version);
+
+                if (!is_numeric($version)) {
+                    continue;
+                }
+
+                $path = str_replace('.' . $version, '', $file->getPathName());
+                if ($path !== $this->path) {
+                    continue;
+                }
+
+                array_push($versions, $version);
             }
         }
 
-        return $versions;
+        return (count($versions) !== 0) ? $versions : [1];
     }
 
     /**

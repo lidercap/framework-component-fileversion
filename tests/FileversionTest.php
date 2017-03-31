@@ -68,13 +68,18 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
         $contents = 'this is my random test content ' . rand(1, 100);
 
-        file_put_contents($filePath, $contents);
+        file_put_contents($filePath . '.' . $version, $contents);
         $this->fileVersion->setPath($filePath);
 
         $this->assertEquals($version, $this->fileVersion->version());
     }
 
-    public function testFetch()
+    public function testFetch1()
+    {
+        $this->assertEquals([1], $this->fileVersion->fetch());
+    }
+
+    public function testFetch2()
     {
         $version  = rand(1, 100);
         $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
@@ -83,6 +88,10 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         file_put_contents($filePath . '.1', $contents);
         file_put_contents($filePath . '.2', $contents);
         file_put_contents($filePath . '.3', $contents);
+        file_put_contents($filePath . '-another.1', $contents);
+        file_put_contents($filePath . '-another.2', $contents);
+        file_put_contents($filePath . '-another.3', $contents);
+        file_put_contents($filePath . '-unversioned', $contents);
         $this->fileVersion->setPath($filePath);
 
         $this->assertEquals([1,2,3], $this->fileVersion->fetch());
