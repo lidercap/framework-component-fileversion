@@ -14,7 +14,7 @@ COVERAGE=${BUILD}/coverage/index.html
 OS=$(shell uname -s)
 NAME=`sed 's/[\", ]//g' composer.json | grep name | cut -d: -f2`
 DESC=`sed 's/[\",]//g' composer.json | grep description | cut -d: -f2 | sed -e 's/^[ \t]*//'`
-VERSION=`sed 's/[\", ]//g' composer.json | grep version | cut -d: -f2`
+VERSION=`head -4 composer.json | tail -1 | cut -d: -f2 | sed 's/[\"\n ,]//g'`
 
 build: .rw .clear .check-composer .build lint phpcs phpmd phpcpd
 	@make testdox > /dev/null
