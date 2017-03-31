@@ -62,7 +62,6 @@ class Fileversion implements FileversionInterface
 
         foreach ($iterator as $file) {
             if (!$file->isDot()) {
-
                 $filename = basename($file->getPathName());
                 $version  = @explode('.', $filename);
                 $version  = end($version);
@@ -107,12 +106,10 @@ class Fileversion implements FileversionInterface
     public function write($contents)
     {
         $path = $this->path . '.' . $this->version();
-        if (!file_exists($path)) {
-            file_put_contents($path, $contents);
-            return $this;
+        if (file_exists($path)) {
+            $path = $this->path . '.' . ($this->version() + 1);
         }
 
-        $path = $this->path . '.' . $this->version() + 1;
         file_put_contents($path, $contents);
 
         return $this;

@@ -140,16 +140,18 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
 
     public function testWrite2()
     {
-        $version  = 1;
+        $version  = 2;
         $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
-        $contents = 'this is my ramdom content ' . rand(1, 100);
-        $object   = $this->fileVersion->write($contents);
-        $this->assertInstanceOf(Fileversion::class, $object);
+        $contents1 = 'this is my ramdom content ' . rand(1, 100);
+        $this->fileVersion->write($contents1);
+
+        $contents2 = 'this is my ramdom content ' . rand(1, 100);
+        $this->fileVersion->write($contents2);
 
         $this->assertEquals($version, $this->fileVersion->version());
-        $this->assertEquals($contents, $this->fileVersion->read());
+        $this->assertEquals($contents2, $this->fileVersion->read());
     }
 
     public function testClearDefaultValue()
