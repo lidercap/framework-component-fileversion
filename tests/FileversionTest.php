@@ -130,7 +130,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
-        $contents = 'this is my ramdom content ' . rand(1, 100);
+        $contents = 'this is my random content ' . rand(1, 100);
         $object   = $this->fileVersion->write($contents);
         $this->assertInstanceOf(Fileversion::class, $object);
 
@@ -144,10 +144,10 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
-        $contents1 = 'this is my ramdom content ' . rand(1, 100);
+        $contents1 = 'this is my random content ' . rand(1, 100);
         $this->fileVersion->write($contents1);
 
-        $contents2 = 'this is my ramdom content ' . rand(1, 100);
+        $contents2 = 'this is my random content ' . rand(1, 100);
         $this->fileVersion->write($contents2);
 
         $this->assertEquals($version, $this->fileVersion->version());
@@ -156,13 +156,18 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
 
     public function testDelete1()
     {
+        $this->fileVersion->delete(rand(1, 100));
+    }
+
+    public function testDelete2()
+    {
         $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
-        $contents1 = 'this is my ramdom content ' . rand(1, 100);
+        $contents1 = 'this is my random content ' . rand(1, 100);
         $this->fileVersion->write($contents1);
 
-        $contents2 = 'this is my ramdom content ' . rand(1, 100);
+        $contents2 = 'this is my random content ' . rand(1, 100);
         $this->fileVersion->write($contents2);
 
         $object = $this->fileVersion->delete(1);
@@ -172,15 +177,15 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists($filePath . '.2');
     }
 
-    public function testDelete2()
+    public function testDelete3()
     {
         $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
-        $contents1 = 'this is my ramdom content ' . rand(1, 100);
+        $contents1 = 'this is my random content ' . rand(1, 100);
         $this->fileVersion->write($contents1);
 
-        $contents2 = 'this is my ramdom content ' . rand(1, 100);
+        $contents2 = 'this is my random content ' . rand(1, 100);
         $this->fileVersion->write($contents2);
 
         $object = $this->fileVersion->delete(2);
@@ -195,12 +200,38 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
-        $contents1 = 'this is my ramdom content ' . rand(1, 100);
+        $contents1 = 'this is my random content ' . rand(1, 100);
         $this->fileVersion->write($contents1);
 
         $object = $this->fileVersion->clear();
         $this->assertInstanceOf(Fileversion::class, $object);
+    }
 
+    public function testClear2()
+    {
+        $keep     = rand(1, 3);
+        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $this->fileVersion->setPath($filePath);
 
+        for ($i = 1; $i <= $keep; $i++) {
+            $this->fileVersion->write('this is my random content ' . rand(1, 100));
+        }
+
+        $object = $this->fileVersion->clear($keep);
+        $this->assertInstanceOf(Fileversion::class, $object);
+    }
+
+    public function testClear3()
+    {
+        $keep     = 3;
+        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $this->fileVersion->setPath($filePath);
+
+        for ($i = 1; $i <= 10; $i++) {
+            $this->fileVersion->write('this is my random content ' . rand(1, 100));
+        }
+
+        $object = $this->fileVersion->clear($keep);
+        $this->assertInstanceOf(Fileversion::class, $object);
     }
 }

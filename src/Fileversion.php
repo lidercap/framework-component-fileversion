@@ -124,8 +124,7 @@ class Fileversion implements FileversionInterface
      */
     public function delete($version)
     {
-        $path = $this->path . '.' . $version;
-        @unlink($path);
+        @unlink($this->path . '.' . $version);
 
         return $this;
     }
@@ -141,8 +140,16 @@ class Fileversion implements FileversionInterface
     public function clear($keep = 3)
     {
         $versions = $this->fetch();
+        if (count($versions) <= $keep) {
+            return $this;
+        }
 
-        print_r($versions);
+        $kill = (count($versions) - $keep);
+        array_splice($versions, $kill);
+
+        foreach ($versions as $version) {
+            $this->delete($version);
+        }
 
         return $this;
     }
