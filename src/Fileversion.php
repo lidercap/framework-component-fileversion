@@ -83,7 +83,7 @@ class Fileversion implements FileversionInterface
     }
 
     /**
-     * Obtém o conteúdo do arquivo.
+     * Obtém o conteúdo da versão mais atual do arquivo.
      *
      * @return string
      */

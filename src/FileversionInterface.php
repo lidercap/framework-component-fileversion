@@ -48,7 +48,7 @@ interface FileversionInterface
     public function fetch();
 
     /**
-     * Obtém o conteúdo do arquivo.
+     * Obtém o conteúdo da versão mais atual do arquivo.
      *
      * @return string
      */
