@@ -116,6 +116,21 @@ class Fileversion implements FileversionInterface
     }
 
     /**
+     * Apaga uma versão específica do arquivo.
+     *
+     * @param int $version
+     *
+     * @return $this
+     */
+    public function delete($version)
+    {
+        $path = $this->path . '.' . $version;
+        @unlink($path);
+
+        return $this;
+    }
+
+    /**
      * Apaga do disco todas as versões do arquivo,
      * mantendo somente o número de versões especificado.
      *
@@ -125,6 +140,10 @@ class Fileversion implements FileversionInterface
      */
     public function clear($keep = 3)
     {
+        $versions = $this->fetch();
+
+        print_r($versions);
+
         return $this;
     }
 }

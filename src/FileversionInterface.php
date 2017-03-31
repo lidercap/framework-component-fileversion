@@ -64,6 +64,15 @@ interface FileversionInterface
     public function write($contents);
 
     /**
+     * Apaga uma versão específica do arquivo.
+     *
+     * @param int $version
+     *
+     * @return $this
+     */
+    public function delete($version);
+
+    /**
      * Apaga do disco todas as versões do arquivo,
      * mantendo somente o número de versões especificado.
      *
