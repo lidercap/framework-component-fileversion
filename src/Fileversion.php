@@ -40,10 +40,6 @@ class Fileversion implements FileversionInterface
      */
     public function version()
     {
-        if (!file_exists($this->path)) {
-            return 1;
-        }
-
         $versions = $this->fetch();
 
         return end($versions);
@@ -75,8 +71,7 @@ class Fileversion implements FileversionInterface
                     continue;
                 }
 
-                $path = str_replace('.' . $version, '', $file->getPathName());
-                if ($path !== $this->path) {
+                if ($this->suffixRemove($file->getPathName()) !== $this->suffixRemove($this->path)) {
                     continue;
                 }
 
