@@ -172,6 +172,24 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists($filePath . '.2');
     }
 
+    public function testDelete2()
+    {
+        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $this->fileVersion->setPath($filePath);
+
+        $contents1 = 'this is my ramdom content ' . rand(1, 100);
+        $this->fileVersion->write($contents1);
+
+        $contents2 = 'this is my ramdom content ' . rand(1, 100);
+        $this->fileVersion->write($contents2);
+
+        $object = $this->fileVersion->delete(2);
+        $this->assertInstanceOf(Fileversion::class, $object);
+
+        $this->assertFileNotExists($filePath . '.2');
+        $this->assertFileExists($filePath . '.1');
+    }
+
     public function testClear1()
     {
         $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
