@@ -1,7 +1,7 @@
 {
   "name": "lidercap/framework-component-fileversion",
   "description": "Gerenciador de versões de arquivos",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "proprietary",
   "type": "library",
   "config": {
