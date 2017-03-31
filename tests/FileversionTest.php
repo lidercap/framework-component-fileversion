@@ -30,9 +30,45 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(FileversionInterface::class, $this->fileVersion);
     }
 
-    public function testIsNotUpdated()
+    public function testIsNotUpdated1()
     {
         $this->assertFalse($this->fileVersion->isUpdated());
+    }
+
+    public function testIsNotUpdated2()
+    {
+        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $this->fileVersion->setPath($filePath);
+
+        $contents = 'this is my random content ' . rand(1, 100);
+        $this->fileVersion->write($contents);
+
+        $this->assertFalse($this->fileVersion->isUpdated());
+    }
+
+    public function testIsNotUpdated3()
+    {
+        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $this->fileVersion->setPath($filePath);
+
+        $contents = 'this is my random content ' . rand(1, 100);
+        for ($i = 1; $i <= 10; $i++) {
+            $this->fileVersion->write($contents);
+        }
+
+        $this->assertFalse($this->fileVersion->isUpdated());
+    }
+
+    public function testIsNotUpdated4()
+    {
+        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $this->fileVersion->setPath($filePath);
+
+        $contents = 'this is my random content ' . rand(1, 100);
+        $this->fileVersion->write($contents . '1');
+        $this->fileVersion->write($contents . '2');
+
+        $this->assertTrue($this->fileVersion->isUpdated());
     }
 
     public function testVersion1()

@@ -27,7 +27,17 @@ class Fileversion implements FileversionInterface
      */
     public function isUpdated()
     {
-        return false;
+        $versions = $this->fetch();
+        $count    = count($versions);
+
+        if ($count === 1) {
+            return false;
+        }
+
+        $current = md5_file($this->path . '.' . $versions[$count-1]);
+        $prior   = md5_file($this->path . '.' . $versions[$count-2]);
+
+        return ($current !== $prior);
     }
 
     /**
