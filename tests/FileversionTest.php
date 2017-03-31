@@ -233,5 +233,16 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
 
         $object = $this->fileVersion->clear($keep);
         $this->assertInstanceOf(Fileversion::class, $object);
+
+        $this->assertFileExists($filePath . '.10');
+        $this->assertFileExists($filePath . '.9');
+        $this->assertFileExists($filePath . '.8');
+        $this->assertFileNotExists($filePath . '.7');
+        $this->assertFileNotExists($filePath . '.6');
+        $this->assertFileNotExists($filePath . '.5');
+        $this->assertFileNotExists($filePath . '.4');
+        $this->assertFileNotExists($filePath . '.3');
+        $this->assertFileNotExists($filePath . '.2');
+        $this->assertFileNotExists($filePath . '.1');
     }
 }
