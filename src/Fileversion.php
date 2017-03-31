@@ -58,7 +58,18 @@ class Fileversion implements FileversionInterface
      */
     public function fetch()
     {
-        return [1];
+        $direcory = dirname($this->path);
+        $iterator = new \DirectoryIterator($direcory);
+        $versions = [];
+
+        foreach ($iterator as $file) {
+            if (!$file->isDot()) {
+                $fileversion = new Fileversion($file->getPathName());
+                array_push($versions, $fileversion->version());
+            }
+        }
+
+        return $versions;
     }
 
     /**
