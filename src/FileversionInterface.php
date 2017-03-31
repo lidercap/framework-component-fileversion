@@ -33,6 +33,9 @@ interface FileversionInterface
     /**
      * Obtém o número da versão atual do arquivo.
      *
+     * Caso o arquivo não exista, ou não tenha sido
+     * versionado ainda, a versão retornada será "1".
+     *
      * @return int
      */
     public function version();
