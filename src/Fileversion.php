@@ -34,8 +34,8 @@ class Fileversion implements FileversionInterface
             return false;
         }
 
-        $current = md5_file($this->path . '.' . $versions[$count-1]);
-        $prior   = md5_file($this->path . '.' . $versions[$count-2]);
+        $current = md5_file($this->path . '.' . $versions[$count - 1]);
+        $prior   = md5_file($this->path . '.' . $versions[$count - 2]);
 
         return ($current !== $prior);
     }
