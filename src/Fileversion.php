@@ -53,19 +53,20 @@ class Fileversion implements FileversionInterface
         return $versions;
     }
 
+    /**
+     * Obtém o número da versão atual do arquivo.
+     *
+     * Caso o arquivo não exista, ou não tenha sido
+     * versionado ainda, a versão retornada será "1".
+     *
+     * @return int
+     */
+    public function version()
+    {
+        $versions = $this->versions();
 
-
-
-
-
-
-
-
-
-
-
-
-
+        return (int)end($versions);
+    }
 
     /**
      * Verifica se a versão atual do arquivo tem
@@ -75,7 +76,7 @@ class Fileversion implements FileversionInterface
      */
     public function isUpdated()
     {
-        $versions = $this->fetch();
+        $versions = $this->versions();
         $count    = count($versions);
 
         if ($count === 1) {
@@ -87,23 +88,6 @@ class Fileversion implements FileversionInterface
 
         return ($current !== $prior);
     }
-
-    /**
-     * Obtém o número da versão atual do arquivo.
-     *
-     * Caso o arquivo não exista, ou não tenha sido
-     * versionado ainda, a versão retornada será "1".
-     *
-     * @return int
-     */
-    public function version()
-    {
-        $versions = $this->fetch();
-
-        return (int)end($versions);
-    }
-
-
 
     /**
      * Obtém o conteúdo da versão mais atual do arquivo.

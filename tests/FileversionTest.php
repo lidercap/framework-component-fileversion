@@ -78,71 +78,14 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         $this->fileVersion->setPath($filePath);
 
         $versions = $this->fileVersion->versions();
-
-        print_r($versions);
-
         $this->assertEquals([1], $versions);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function testIsNotUpdated1()
-    {
-        $this->assertFalse($this->fileVersion->isUpdated());
-    }
-
-    public function testIsNotUpdated2()
-    {
-        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
-        $this->fileVersion->setPath($filePath);
-
-        $contents = 'this is my random content ' . rand(1, 100);
-        $this->fileVersion->write($contents);
-
-        $this->assertFalse($this->fileVersion->isUpdated());
-    }
-
-    public function testIsNotUpdated3()
-    {
-        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
-        $this->fileVersion->setPath($filePath);
-
-        $contents = 'this is my random content ' . rand(1, 100);
-        for ($i = 1; $i <= 10; $i++) {
-            $this->fileVersion->write($contents);
-        }
-
-        $this->assertFalse($this->fileVersion->isUpdated());
-    }
-
-    public function testIsNotUpdated4()
-    {
-        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
-        $this->fileVersion->setPath($filePath);
-
-        $contents = 'this is my random content ' . rand(1, 100);
-        $this->fileVersion->write($contents . '1');
-        $this->fileVersion->write($contents . '2');
-
-        $this->assertTrue($this->fileVersion->isUpdated());
     }
 
     public function testVersion1()
     {
-        $this->assertEquals(1, $this->fileVersion->version());
+        $version = $this->fileVersion->version();
+        $this->assertInternalType('int', $version);
+        $this->assertEquals(1, $version);
     }
 
     public function testVersion2()
@@ -153,7 +96,9 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         file_put_contents($filePath, $contents);
         $this->fileVersion->setPath($filePath);
 
-        $this->assertEquals(1, $this->fileVersion->version());
+        $version = $this->fileVersion->version();
+        $this->assertInternalType('int', $version);
+        $this->assertEquals(1, $version);
     }
 
     public function testVersion3()
@@ -164,7 +109,9 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         file_put_contents($filePath, $contents);
         $this->fileVersion->setPath($filePath);
 
-        $this->assertEquals(1, $this->fileVersion->version());
+        $version = $this->fileVersion->version();
+        $this->assertInternalType('int', $version);
+        $this->assertEquals(1, $version);
     }
 
     public function testVersion4()
@@ -179,7 +126,46 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($version, $this->fileVersion->version());
     }
 
+    public function testIsUpdated1()
+    {
+        $this->assertFalse($this->fileVersion->isUpdated());
+    }
 
+    public function testIsUpdated2()
+    {
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
+        $this->fileVersion->setPath($filePath);
+
+        $contents = 'this is my random content ' . rand(1, 100);
+        $this->fileVersion->write($contents);
+
+        $this->assertFalse($this->fileVersion->isUpdated());
+    }
+
+    public function testIsUpdated3()
+    {
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
+        $this->fileVersion->setPath($filePath);
+
+        $contents = 'this is my random content ' . rand(1, 100);
+        for ($i = 1; $i <= 10; $i++) {
+            $this->fileVersion->write($contents);
+        }
+
+        $this->assertFalse($this->fileVersion->isUpdated());
+    }
+
+    public function testIsUpdated4()
+    {
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
+        $this->fileVersion->setPath($filePath);
+
+        $contents = 'this is my random content ' . rand(1, 100);
+        $this->fileVersion->write($contents . '1');
+        $this->fileVersion->write($contents . '2');
+
+        $this->assertTrue($this->fileVersion->isUpdated());
+    }
 
     public function testRead1()
     {
