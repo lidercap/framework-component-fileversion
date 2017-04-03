@@ -66,29 +66,21 @@ class Fileversion implements FileversionInterface
             return [1];
         }
 
-        $direcory = dirname($this->path);
-        $iterator = new \DirectoryIterator($direcory);
+        $files    = glob($this->path . '.*');
         $versions = [];
 
-        foreach ($iterator as $file) {
-            if (!$file->isDot()) {
-                $filename = basename($file->getPathName());
-                $version  = @explode('.', $filename);
-                $version  = end($version);
+        foreach ($files as $file) {
+            $version = @explode('.', basename($file));
+            $version = (int)end($version);
 
-                if (!is_numeric($version)) {
-                    continue;
-                }
-
-                if ($this->suffixRemove($file->getPathName()) !== $this->suffixRemove($this->path)) {
-                    continue;
-                }
-
-                array_push($versions, $version);
+            if (!is_numeric($version)) {
+                continue;
             }
+
+            array_push($versions, $version);
         }
 
-        return (count($versions) !== 0) ? $versions : [1];
+        return (count($versions) !== 0) ? sort($versions, SORT_NUMERIC) : [1];
     }
 
     /**
