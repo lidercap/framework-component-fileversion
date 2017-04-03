@@ -4,8 +4,6 @@ namespace Lidercap\Tests\Component\Fileversion;
 
 use Lidercap\Component\Fileversion\Fileversion;
 use Lidercap\Component\Fileversion\FileversionInterface;
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
 
 class FileversionTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,25 +13,70 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
     protected $fileVersion;
 
     /**
-     * @var vfsStreamDirectory
+     * @var string
      */
-    protected $workingDir;
+    protected $workingDir = '/tmp/file-version-test/';
 
     public function setUp()
     {
         $this->fileVersion = new Fileversion;
-        $this->workingDir  = vfsStream::setup('tmp');
+        $this->tearDown();
+        @mkdir($this->workingDir);
     }
 
     public function tearDown()
     {
-        array_map('unlink', glob('/tmp/*.txt*'));
+        array_map('unlink', glob($this->workingDir . '*.txt*'));
+        @rmdir($this->workingDir);
     }
 
     public function testInterface()
     {
         $this->assertInstanceOf(FileversionInterface::class, $this->fileVersion);
     }
+
+    public function testVersions1()
+    {
+        $this->assertEquals([1], $this->fileVersion->versions());
+    }
+
+    public function testVersions2()
+    {
+        $version  = rand(1, 100);
+        $filePath = '/tmp/file-' . md5(microtime(true)) . '.txt';
+        $contents = 'this is my random test content ' . rand(1, 100);
+
+        file_put_contents($filePath . '.a', $contents);
+        file_put_contents($filePath . '.b', $contents);
+        file_put_contents($filePath . '.c', $contents);
+        file_put_contents($filePath . '.1', $contents);
+        file_put_contents($filePath . '.2', $contents);
+        file_put_contents($filePath . '.3', $contents);
+        file_put_contents($filePath . '-another.1', $contents);
+        file_put_contents($filePath . '-another.2', $contents);
+        file_put_contents($filePath . '-another.3', $contents);
+        file_put_contents($filePath . '-unversioned', $contents);
+        $this->fileVersion->setPath($filePath);
+
+        print_r($this->fileVersion->versions());
+
+        // $this->assertEquals([1,2,3], $this->fileVersion->versions());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function testIsNotUpdated1()
     {
@@ -42,7 +85,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
 
     public function testIsNotUpdated2()
     {
-        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
         $contents = 'this is my random content ' . rand(1, 100);
@@ -53,7 +96,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
 
     public function testIsNotUpdated3()
     {
-        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
         $contents = 'this is my random content ' . rand(1, 100);
@@ -66,7 +109,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
 
     public function testIsNotUpdated4()
     {
-        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
         $contents = 'this is my random content ' . rand(1, 100);
@@ -83,7 +126,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
 
     public function testVersion2()
     {
-        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true));
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true));
         $contents = 'this is my random test content ' . rand(1, 100);
 
         file_put_contents($filePath, $contents);
@@ -94,7 +137,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
 
     public function testVersion3()
     {
-        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
         $contents = 'this is my random test content ' . rand(1, 100);
 
         file_put_contents($filePath, $contents);
@@ -106,7 +149,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
     public function testVersion4()
     {
         $version  = rand(1, 100);
-        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
         $contents = 'this is my random test content ' . rand(1, 100);
 
         file_put_contents($filePath . '.' . $version, $contents);
@@ -115,35 +158,11 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($version, $this->fileVersion->version());
     }
 
-    public function testFetch1()
-    {
-        $this->assertEquals([1], $this->fileVersion->fetch());
-    }
 
-    public function testFetch2()
-    {
-        $version  = rand(1, 100);
-        // $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
-        $filePath = '/tmp/file-' . md5(microtime(true)) . '.txt';
-        $contents = 'this is my random test content ' . rand(1, 100);
-
-        file_put_contents($filePath . '.1', $contents);
-        file_put_contents($filePath . '.2', $contents);
-        file_put_contents($filePath . '.3', $contents);
-        file_put_contents($filePath . '-another.1', $contents);
-        file_put_contents($filePath . '-another.2', $contents);
-        file_put_contents($filePath . '-another.3', $contents);
-        file_put_contents($filePath . '-unversioned', $contents);
-        $this->fileVersion->setPath($filePath);
-
-        print_r($this->fileVersion->fetch());
-
-        // $this->assertEquals([1,2,3], $this->fileVersion->fetch());
-    }
 
     public function testRead1()
     {
-        $filePath = $this->workingDir->url() . '/unexistent-file-' . md5(microtime(true)) . '.txt';
+        $filePath = $this->workingDir . 'unexistent-file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
         $this->assertFalse($this->fileVersion->read());
     }
@@ -151,7 +170,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
     public function testRead2()
     {
         $version  = rand(1, 100);
-        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
 
         $contents1 = 'this is my first random test content ' . rand(1, 100);
         $contents2 = 'this is my seccond random test content ' . rand(1, 100);
@@ -171,7 +190,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
     public function testWrite1()
     {
         $version  = 1;
-        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
         $contents = 'this is my random content ' . rand(1, 100);
@@ -185,7 +204,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
     public function testWrite2()
     {
         $version  = 2;
-        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
         $contents1 = 'this is my random content ' . rand(1, 100);
@@ -205,7 +224,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
 
     public function testDelete2()
     {
-        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
         $contents1 = 'this is my random content ' . rand(1, 100);
@@ -223,7 +242,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
 
     public function testDelete3()
     {
-        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
         $contents1 = 'this is my random content ' . rand(1, 100);
@@ -241,7 +260,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
 
     public function testClear1()
     {
-        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
         $contents1 = 'this is my random content ' . rand(1, 100);
@@ -254,7 +273,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
     public function testClear2()
     {
         $keep     = rand(1, 3);
-        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
         for ($i = 1; $i <= $keep; $i++) {
@@ -268,7 +287,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
     public function testClear3()
     {
         $keep     = 3;
-        $filePath = $this->workingDir->url() . '/file-' . md5(microtime(true)) . '.txt';
+        $filePath = $this->workingDir . 'file-' . md5(microtime(true)) . '.txt';
         $this->fileVersion->setPath($filePath);
 
         for ($i = 1; $i <= 10; $i++) {

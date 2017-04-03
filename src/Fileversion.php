@@ -20,6 +20,48 @@ class Fileversion implements FileversionInterface
     }
 
     /**
+     * Lista todas as versões do arquivo.
+     *
+     * @return array
+     */
+    public function versions()
+    {
+        if (!strlen($this->path)) {
+            return [1];
+        }
+
+        $files    = glob($this->path . '.*');
+        $versions = [];
+
+        foreach ($files as $file) {
+            $version = @explode('.', basename($file));
+            $version = end($version);
+
+            if (!is_numeric($version)) {
+                continue;
+            }
+
+            array_push($versions, (int)$version);
+        }
+
+        return (count($versions) !== 0) ? sort($versions, SORT_NUMERIC) : [1];
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
      * Verifica se a versão atual do arquivo tem
      * diferenças em relação a sua versão anterior.
      *
@@ -52,36 +94,10 @@ class Fileversion implements FileversionInterface
     {
         $versions = $this->fetch();
 
-        return end($versions);
+        return (int)end($versions);
     }
 
-    /**
-     * Lista todas as versões do arquivo.
-     *
-     * @return array
-     */
-    public function fetch()
-    {
-        if (!strlen($this->path)) {
-            return [1];
-        }
 
-        $files    = glob($this->path . '.*');
-        $versions = [];
-
-        foreach ($files as $file) {
-            $version = @explode('.', basename($file));
-            $version = (int)end($version);
-
-            if (!is_numeric($version)) {
-                continue;
-            }
-
-            array_push($versions, $version);
-        }
-
-        return (count($versions) !== 0) ? sort($versions, SORT_NUMERIC) : [1];
-    }
 
     /**
      * Obtém o conteúdo da versão mais atual do arquivo.

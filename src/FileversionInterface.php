@@ -23,12 +23,11 @@ interface FileversionInterface
     public function setPath($path);
 
     /**
-     * Verifica se a versão atual do arquivo tem
-     * diferenças em relação a sua versão anterior.
+     * Lista todas as versões do arquivo.
      *
-     * @return bool
+     * @return array
      */
-    public function isUpdated();
+    public function versions();
 
     /**
      * Obtém o número da versão atual do arquivo.
@@ -41,11 +40,12 @@ interface FileversionInterface
     public function version();
 
     /**
-     * Lista todas as versões do arquivo.
+     * Verifica se a versão atual do arquivo tem
+     * diferenças em relação a sua versão anterior.
      *
-     * @return array
+     * @return bool
      */
-    public function fetch();
+    public function isUpdated();
 
     /**
      * Obtém o conteúdo da versão mais atual do arquivo.
