@@ -128,7 +128,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
 
     public function testIsUpdated1()
     {
-        $this->assertFalse($this->fileVersion->isUpdated());
+        $this->assertTrue($this->fileVersion->isUpdated());
     }
 
     public function testIsUpdated2()
@@ -139,7 +139,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         $contents = 'this is my random content ' . rand(1, 100);
         $this->fileVersion->write($contents);
 
-        $this->assertFalse($this->fileVersion->isUpdated());
+        $this->assertTrue($this->fileVersion->isUpdated());
     }
 
     public function testIsUpdated3()

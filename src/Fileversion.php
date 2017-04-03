@@ -80,7 +80,7 @@ class Fileversion implements FileversionInterface
         $count    = count($versions);
 
         if ($count === 1) {
-            return false;
+            return true;
         }
 
         $current = md5_file($this->path . '.' . $versions[$count - 1]);
