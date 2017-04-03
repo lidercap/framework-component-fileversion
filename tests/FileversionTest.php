@@ -58,9 +58,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         file_put_contents($filePath . '-unversioned', $contents);
         $this->fileVersion->setPath($filePath);
 
-        print_r($this->fileVersion->versions());
-
-        // $this->assertEquals([1,2,3], $this->fileVersion->versions());
+        $this->assertEquals([1,2,3], $this->fileVersion->versions());
     }
 
 
