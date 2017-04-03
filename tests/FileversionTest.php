@@ -26,7 +26,7 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        array_map('unlink', glob($this->workingDir . '*.txt*'));
+        array_map('unlink', glob($this->workingDir . '*'));
         @rmdir($this->workingDir);
     }
 
