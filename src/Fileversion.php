@@ -147,7 +147,7 @@ class Fileversion implements FileversionInterface
      */
     public function clear($keep = 3)
     {
-        $versions = $this->fetch();
+        $versions = $this->versions();
         if (count($versions) <= $keep) {
             return $this;
         }
