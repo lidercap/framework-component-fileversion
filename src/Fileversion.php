@@ -44,7 +44,13 @@ class Fileversion implements FileversionInterface
             array_push($versions, (int)$version);
         }
 
-        return (count($versions) !== 0) ? sort($versions, SORT_NUMERIC) : [1];
+        if (count($versions) !== 0) {
+            sort($versions, SORT_NUMERIC);
+        } else {
+            $versions = [1];
+        }
+
+        return $versions;
     }
 
 

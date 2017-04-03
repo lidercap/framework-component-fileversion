@@ -58,7 +58,30 @@ class FileversionTest extends \PHPUnit_Framework_TestCase
         file_put_contents($filePath . '-unversioned', $contents);
         $this->fileVersion->setPath($filePath);
 
-        $this->assertEquals([1,2,3], $this->fileVersion->versions());
+        $versions = $this->fileVersion->versions();
+        $this->assertEquals([1,2,3], $versions);
+    }
+
+    public function testVersions3()
+    {
+        $version  = rand(1, 100);
+        $filePath = '/tmp/file-' . md5(microtime(true)) . '.txt';
+        $contents = 'this is my random test content ' . rand(1, 100);
+
+        file_put_contents($filePath . '.a', $contents);
+        file_put_contents($filePath . '.b', $contents);
+        file_put_contents($filePath . '.c', $contents);
+        file_put_contents($filePath . '-another.1', $contents);
+        file_put_contents($filePath . '-another.2', $contents);
+        file_put_contents($filePath . '-another.3', $contents);
+        file_put_contents($filePath . '-unversioned', $contents);
+        $this->fileVersion->setPath($filePath);
+
+        $versions = $this->fileVersion->versions();
+
+        print_r($versions);
+
+        $this->assertEquals([1], $versions);
     }
 
 
